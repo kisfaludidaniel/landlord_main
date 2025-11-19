@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import { useAuth } from '@/contexts/AuthContext';
 import { UserRole } from '@/types/auth.types';
@@ -17,7 +17,7 @@ interface DemoUser {
 
 export default function LoginInteractive() {
   const { signIn, signUp, loading } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [demoLoading, setDemoLoading] = useState<string | null>(null);
@@ -64,14 +64,14 @@ export default function LoginInteractive() {
         const userRole = data.user.user_metadata?.role;
         
         if (userRole === 'ADMIN') {
-          router.push('/system-admin-dashboard');
+          navigate('/system-admin-dashboard');
         } else if (userRole === 'LANDLORD') {
-          router.push('/main-dashboard');
+          navigate('/main-dashboard');
         } else if (userRole === 'TENANT') {
-          router.push('/tenant/dashboard');
+          navigate('/tenant/dashboard');
         } else {
           // Default redirect
-          router.push('/main-dashboard');
+          navigate('/main-dashboard');
         }
       }
     } catch (err) {
@@ -129,11 +129,11 @@ export default function LoginInteractive() {
       if (data.user) {
         // Redirect based on role after successful authentication
         if (role === 'ADMIN') {
-          router.push('/system-admin-dashboard');
+          navigate('/system-admin-dashboard');
         } else if (role === 'LANDLORD') {
-          router.push('/main-dashboard');
+          navigate('/main-dashboard');
         } else if (role === 'TENANT') {
-          router.push('/tenant/dashboard');
+          navigate('/tenant/dashboard');
         }
       }
     } catch (err) {

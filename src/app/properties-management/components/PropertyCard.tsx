@@ -22,9 +22,10 @@ interface PropertyCardProps {
   onViewDetails: (propertyId: string) => void;
   onAddUnit: (propertyId: string) => void;
   onViewTenants: (propertyId: string) => void;
+  onEditProperty?: (propertyId: string) => void;
 }
 
-const PropertyCard = ({ property, onViewDetails, onAddUnit, onViewTenants }: PropertyCardProps) => {
+const PropertyCard = ({ property, onViewDetails, onAddUnit, onViewTenants, onEditProperty }: PropertyCardProps) => {
   const getOccupancyColor = (rate: number) => {
     if (rate >= 90) return 'text-success';
     if (rate >= 70) return 'text-warning';
@@ -119,7 +120,7 @@ const PropertyCard = ({ property, onViewDetails, onAddUnit, onViewTenants }: Pro
             <Icon name="EyeIcon" size={16} />
             <span>Részletek</span>
           </button>
-          
+
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => onAddUnit(property.id)}
@@ -136,6 +137,16 @@ const PropertyCard = ({ property, onViewDetails, onAddUnit, onViewTenants }: Pro
               <span>Bérlők</span>
             </button>
           </div>
+
+          {onEditProperty && (
+            <button
+              onClick={() => onEditProperty(property.id)}
+              className="w-full flex items-center justify-center space-x-2 px-3 py-2 border border-border rounded-md hover:bg-muted transition-colors text-xs font-medium"
+            >
+              <Icon name="PencilSquareIcon" size={14} />
+              <span>Szerkesztés</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/AppIcon';
 
 interface QuickAction {
@@ -138,7 +138,7 @@ const DashboardQuickActions = ({
 
     if (action.href && !action.disabled) {
       return (
-        <Link key={action.id} href={action.href} className={baseClasses}>
+        <Link key={action.id} to={action.href} className={baseClasses}>
           {content}
         </Link>
       );

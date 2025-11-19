@@ -30,13 +30,17 @@ import {
   type TenantInviteExportData } from
 './ExportUtils';
 
+type PropertyCategory = 'lakas' | 'haz' | 'kereskedelmi' | 'iroda' | 'raktar' | 'tarsashaz' | 'egyeb';
+type UnitCategory = 'lakas' | 'uzlet' | 'iroda' | 'raktar' | 'egyeb';
+
 interface Property {
   id: string;
   name: string;
   address: string;
   image: string;
   alt: string;
-  type: 'lakas' | 'haz' | 'kereskedelmi' | 'iroda' | 'raktar' | 'tarsashaz' | 'egyeb';
+  propertyType: PropertyCategory;
+  type?: PropertyCategory;
   meta: any;
   totalUnits: number;
   occupiedUnits: number;
@@ -52,7 +56,8 @@ interface Property {
   units: Array<{
     id: string;
     number: string;
-    type: string;
+    name: string;
+    type: UnitCategory;
     area: number;
     rent: number;
     isOccupied: boolean;
@@ -65,7 +70,7 @@ interface Property {
     units: Array<{
       id: string;
       name: string;
-      unit_type: string;
+      unit_type: UnitCategory;
       isOccupied: boolean;
       tenant_name?: string;
     }>;
@@ -134,6 +139,7 @@ const PropertiesInteractive = () => {
     address: '1051 Budapest, Váci utca 15.',
     image: "https://images.unsplash.com/photo-1680433328065-5a78a82fa5b2",
     alt: 'Modern apartment building with glass facade and balconies in downtown Budapest',
+    propertyType: 'lakas',
     type: 'lakas',
     meta: {
       alapterulet: 75,
@@ -160,7 +166,7 @@ const PropertiesInteractive = () => {
     { url: "https://images.unsplash.com/photo-1618259715220-a89a4e4da76b", alt: 'Modern lobby interior' }],
 
     units: [
-    { id: '1-1', number: '1', type: 'lakás', area: 75, rent: 280000, isOccupied: true, tenant: 'Nagy Péter' }],
+    { id: '1-1', number: '1', name: '1', type: 'lakas', area: 75, rent: 280000, isOccupied: true, tenant: 'Nagy Péter' }],
 
     documents: [
     { id: 'd1', name: 'Tulajdoni lap', type: 'PDF', uploadDate: '2025-10-15', size: '2.3 MB' }],
@@ -178,6 +184,7 @@ const PropertiesInteractive = () => {
     address: '1132 Budapest, Váci út 45.',
     image: "https://images.unsplash.com/photo-1646451402366-7ce7af6e6468",
     alt: 'Modern apartment complex with multiple buildings',
+    propertyType: 'tarsashaz',
     type: 'tarsashaz',
     meta: {
       epites_eve: 2015,
@@ -224,19 +231,19 @@ const PropertiesInteractive = () => {
   }];
 
 
-  const filteredProperties = mockProperties.filter((property) => {
-    // Search filter
-    const matchesSearch = !searchQuery ||
-    property.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    property.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    property.type.toLowerCase().includes(searchQuery.toLowerCase());
+    const filteredProperties = mockProperties.filter((property) => {
+      // Search filter
+      const matchesSearch = !searchQuery ||
+      property.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.propertyType.toLowerCase().includes(searchQuery.toLowerCase());
 
     // Location filter
     const matchesLocation = !filters.location ||
     property.address.toLowerCase().includes(filters.location.toLowerCase());
 
     // Property type filter  
-    const matchesType = !filters.propertyType || property.type === filters.propertyType;
+      const matchesType = !filters.propertyType || property.propertyType === filters.propertyType;
 
     // Occupancy status filter
     const matchesOccupancy = !filters.occupancyStatus ||
@@ -279,11 +286,11 @@ const PropertiesInteractive = () => {
 
   // Enhanced export functions using the new utility
   const handleExport = (format: 'csv' | 'xlsx' = 'csv', dataType: 'properties' | 'units' | 'invites' | 'all' = 'properties') => {
-    const propertiesData: PropertyExportData[] = filteredProperties.map((prop) => ({
-      id: prop.id,
-      name: prop.name,
-      address: prop.address,
-      type: prop.type,
+      const propertiesData: PropertyExportData[] = filteredProperties.map((prop) => ({
+        id: prop.id,
+        name: prop.name,
+        address: prop.address,
+        type: prop.propertyType,
       description: prop.description,
       created_at: prop.lastUpdated,
       landlord_id: 'current-user', // Would come from auth context
@@ -291,31 +298,32 @@ const PropertiesInteractive = () => {
       occupancy_rate: prop.occupancyRate
     }));
 
-    const unitsData: UnitExportData[] = filteredProperties.flatMap((prop) => {
-      if (prop.type === 'tarsashaz' && prop.buildings) {
-        return prop.buildings.flatMap((building) =>
-        building.units.map((unit) => ({
-          id: unit.id,
-          name: unit.name,
-          property_name: prop.name,
-          building_name: building.name,
-          unit_type: unit.unit_type,
-          meta: {/* unit metadata would be here */},
-          created_at: prop.lastUpdated,
-          is_occupied: unit.isOccupied,
-          tenant_name: unit.tenant_name
-        }))
-        );
-      } else {
-        return prop.units.map((unit) => ({
-          id: unit.id,
-          name: unit.number,
-          property_name: prop.name,
-          unit_type: unit.type,
-          meta: { alapterulet: unit.area, berleti_dij: unit.rent },
-          created_at: prop.lastUpdated,
-          is_occupied: unit.isOccupied,
-          tenant_name: unit.tenant
+      const unitsData: UnitExportData[] = filteredProperties.flatMap((prop) => {
+        if (prop.propertyType === 'tarsashaz' && prop.buildings) {
+          return prop.buildings.flatMap((building) =>
+            building.units.map((unit) => ({
+              id: unit.id,
+              name: unit.name,
+              property_name: prop.name,
+              building_name: building.name,
+              unit_type: unit.unit_type,
+              meta: {/* unit metadata would be here */},
+              created_at: prop.lastUpdated,
+              is_occupied: unit.isOccupied,
+              tenant_name: unit.tenant_name
+            }))
+          );
+        } else {
+          return prop.units.map((unit) => ({
+            id: unit.id,
+            name: unit.number,
+            property_name: prop.name,
+            building_name: '',
+            unit_type: unit.type,
+            meta: { alapterulet: unit.area, berleti_dij: unit.rent },
+            created_at: prop.lastUpdated,
+            is_occupied: unit.isOccupied,
+            tenant_name: unit.tenant
         }));
       }
     });
@@ -404,14 +412,54 @@ const PropertiesInteractive = () => {
     setShowTenantInvite(false);
   };
 
-  const handleUnitAction = (action: 'add' | 'update' | 'delete', unitId?: string, unitData?: any) => {
-    console.log('Unit action:', action, unitId, unitData);
-    // Handle unit CRUD operations
-  };
+    const handleUnitAction = (action: 'add' | 'update' | 'delete', unitId?: string, unitData?: any) => {
+      console.log('Unit action:', action, unitId, unitData);
+      // Handle unit CRUD operations
+    };
 
-  const closeUpgradeModal = () => {
-    setUpgradeModal((prev) => ({ ...prev, isOpen: false }));
-  };
+    const closeUpgradeModal = () => {
+      setUpgradeModal((prev) => ({ ...prev, isOpen: false }));
+    };
+
+    let unitsForModal: Array<{ id: string; name: string; unit_type: UnitCategory; meta: any; created_at: string; isOccupied: boolean; tenant_name?: string; }> = [];
+    if (selectedProperty) {
+      if (selectedProperty.propertyType === 'tarsashaz') {
+        unitsForModal = selectedProperty.buildings?.flatMap((building) =>
+          building.units.map((unit) => ({
+            id: unit.id,
+            name: unit.name,
+            unit_type: unit.unit_type,
+            meta: {},
+            created_at: selectedProperty.lastUpdated,
+            isOccupied: unit.isOccupied,
+            tenant_name: unit.tenant_name,
+          }))
+        ) ?? [];
+      } else {
+        unitsForModal = selectedProperty.units?.map((unit) => ({
+          id: unit.id,
+          name: unit.number,
+          unit_type: unit.type,
+          meta: { alapterulet: unit.area, berleti_dij: unit.rent },
+          created_at: selectedProperty.lastUpdated,
+          isOccupied: unit.isOccupied,
+          tenant_name: unit.tenant,
+        })) ?? [];
+      }
+    }
+
+    const inviteProperties = mockProperties.map((property) => ({
+      id: property.id,
+      name: property.name,
+      propertyType: property.propertyType,
+      buildings: property.buildings,
+      units: property.units.map((unit) => ({
+        id: unit.id,
+        name: unit.name,
+        unit_type: unit.type,
+        isOccupied: unit.isOccupied,
+      })),
+    }));
 
   if (!isHydrated) {
     return (
@@ -444,13 +492,13 @@ const PropertiesInteractive = () => {
       {!showPropertyForm &&
       <>
           {/* Search and Actions */}
-          <PropertySearch
-          onSearch={setSearchQuery}
-          onExport={handleExport}
-          onAddProperty={handleAddProperty}
-          onAIFeature={handleAIFeature}
-          onTenantInvite={() => setShowTenantInvite(true)}
-          canUseAI={canUseAI(currentPlan)} />
+            <PropertySearch
+            onSearch={setSearchQuery}
+            onExport={() => handleExport()}
+            onAddProperty={handleAddProperty}
+            onAIFeature={handleAIFeature}
+            onTenantInvite={() => setShowTenantInvite(true)}
+            canUseAI={canUseAI(currentPlan)} />
 
 
           {/* Filters */}
@@ -548,29 +596,18 @@ const PropertiesInteractive = () => {
         isOpen={showTenantInvite}
         onClose={() => setShowTenantInvite(false)}
         onInvite={handleTenantInvite}
-        properties={mockProperties} />
+        properties={inviteProperties} />
 
 
-      <UnitsManagementModal
-        isOpen={showUnitsManagement}
-        onClose={() => setShowUnitsManagement(false)}
-        property={selectedProperty}
-        buildings={selectedProperty?.buildings}
-        units={selectedProperty?.type === 'tarsashaz' ?
-        selectedProperty.buildings?.flatMap((b) => b.units) || [] :
-        selectedProperty?.units?.map((u) => ({
-          id: u.id,
-          name: u.number,
-          unit_type: 'lakas' as const,
-          meta: { alapterulet: u.area, berleti_dij: u.rent },
-          created_at: selectedProperty.lastUpdated,
-          isOccupied: u.isOccupied,
-          tenant_name: u.tenant
-        })) || []
-        }
-        onAddUnit={(unitData) => handleUnitAction('add', undefined, unitData)}
-        onUpdateUnit={(unitId, unitData) => handleUnitAction('update', unitId, unitData)}
-        onDeleteUnit={(unitId) => handleUnitAction('delete', unitId)} />
+        <UnitsManagementModal
+          isOpen={showUnitsManagement}
+          onClose={() => setShowUnitsManagement(false)}
+          property={selectedProperty}
+          buildings={selectedProperty?.buildings}
+          units={unitsForModal}
+          onAddUnit={(unitData) => handleUnitAction('add', undefined, unitData)}
+          onUpdateUnit={(unitId, unitData) => handleUnitAction('update', unitId, unitData)}
+          onDeleteUnit={(unitId) => handleUnitAction('delete', unitId)} />
 
 
       <UpgradeModal

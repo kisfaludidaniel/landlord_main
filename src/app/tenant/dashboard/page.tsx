@@ -1,26 +1,26 @@
 'use client';
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
- import Icon from'@/components/ui/AppIcon';
+import Icon from '@/components/ui/AppIcon';
 
 export default function TenantDashboardPage() {
-  const router = useRouter()
+  const navigate = useNavigate();
   const { user, profile, loading } = useAuth()
 
   useEffect(() => {
     if (!loading) {
       if (!user) {
-        router.push('/login-authentication')
+        navigate('/login-authentication')
         return
       }
 
       if (profile?.role !== 'TENANT') {
-        router.push('/main-dashboard')
+        navigate('/main-dashboard')
         return
       }
     }
-  }, [user, profile, loading, router])
+  }, [user, profile, loading, navigate])
 
   if (loading) {
     return (
@@ -50,7 +50,7 @@ export default function TenantDashboardPage() {
             </div>
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => router.push('/login-authentication')}
+                onClick={() => navigate('/login-authentication')}
                 className="flex items-center space-x-2 px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Icon name="ArrowRightOnRectangleIcon" size={20} />

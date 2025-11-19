@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/AppIcon';
 import { PRICING_PLANS, formatPrice, formatPropertyLimit, formatAiStatus } from '@/config/plans';
 
@@ -81,7 +81,7 @@ const PricingPreview = ({ className = '' }: PricingPreviewProps) => {
               </ul>
 
               <Link
-                href={`/role-selection?planId=${plan.id}`}
+                to={`/role-selection?planId=${plan.id}`}
                 className={`w-full inline-flex items-center justify-center px-6 py-4 rounded-lg font-semibold transition-colors duration-200 ${
                   plan.id === 'starter' ?'bg-primary text-primary-foreground hover:bg-primary/90' :'bg-card text-card-foreground border-2 border-border hover:bg-muted'
                 }`}
@@ -152,7 +152,7 @@ const PricingPreview = ({ className = '' }: PricingPreviewProps) => {
                 </ul>
 
                 <Link
-                  href={`/role-selection?planId=${plan.id}`}
+                  to={`/role-selection?planId=${plan.id}`}
                   className={`w-full inline-flex items-center justify-center px-4 py-3 rounded-lg text-sm font-semibold transition-colors duration-200 ${
                     plan.id === 'starter' ?'bg-primary text-primary-foreground hover:bg-primary/90' :'bg-card text-card-foreground border-2 border-border hover:bg-muted'
                   }`}
@@ -170,7 +170,7 @@ const PricingPreview = ({ className = '' }: PricingPreviewProps) => {
             Kérdései vannak az árazással kapcsolatban?
           </p>
           <Link
-            href="/role-selection"
+            to="/role-selection"
             className="inline-flex items-center text-primary hover:text-primary/80 font-medium"
           >
             Vegye fel velünk a kapcsolatot

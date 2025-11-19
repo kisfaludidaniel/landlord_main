@@ -6,7 +6,7 @@ import Icon from '@/components/ui/AppIcon';
 interface Property {
   id: string;
   name: string;
-  type: string;
+  propertyType: string;
   address: string;
 }
 
@@ -120,8 +120,8 @@ const UnitsManagementModal: React.FC<UnitsManagementModalProps> = ({
     if (mode === 'add') {
       onAddUnit({
         ...formData,
-        property_id: property?.type !== 'tarsashaz' ? property?.id : undefined,
-        building_id: property?.type === 'tarsashaz' ? formData.building_id : undefined
+        property_id: property?.propertyType !== 'tarsashaz' ? property?.id : undefined,
+        building_id: property?.propertyType === 'tarsashaz' ? formData.building_id : undefined
       });
     } else if (mode === 'edit' && editingUnit) {
       onUpdateUnit(editingUnit.id, formData);
@@ -304,7 +304,7 @@ const UnitsManagementModal: React.FC<UnitsManagementModalProps> = ({
                 </div>
 
                 {/* Building selection for társasház */}
-                {property.type === 'tarsashaz' && (
+                {property.propertyType === 'tarsashaz' && (
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">
                       Épület *

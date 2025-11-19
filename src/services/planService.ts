@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase/client';
-import { plans as staticPlans } from '@/config/plans';
+import { PRICING_PLANS } from '@/config/plans';
 
 export interface PlanUsage {
   currentProperties: number
@@ -42,7 +42,7 @@ export const planService = {
 
       if (subError) {
         // User has no subscription, return free tier limits
-        const freePlan = staticPlans.find(p => p.id === 'free')
+        const freePlan = PRICING_PLANS.find(p => p.id === 'free')
         return {
           currentProperties: 0,
           propertyLimit: freePlan?.propertyLimit || 1,

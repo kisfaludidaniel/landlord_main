@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { createClient } from '@/lib/supabase/client';
+import { createSupabaseClient } from '@/lib/supabase/client';
 import { Home, CreditCard, Wrench, FileText, MessageCircle, Download, Calendar, Clock, Euro, User, Phone, Mail, Send, Shield } from 'lucide-react';
 import Icon from '@/components/ui/AppIcon';
 
@@ -39,11 +39,11 @@ interface UnitInfo {
     name: string;
     address: string;
     landlord_id: string;
-    user_profiles: {
+    user_profiles: Array<{
       full_name: string;
       email: string;
-      phone: string;
-    };
+      phone: string | null;
+    }>;
   };
 }
 
@@ -71,7 +71,7 @@ export default function TenantPortalDashboard() {
   });
   const [showMaintenanceForm, setShowMaintenanceForm] = useState(false);
 
-  const supabase = createClient();
+  const supabase = createSupabaseClient();
 
   // Language content
   const content = {
@@ -210,7 +210,18 @@ export default function TenantPortalDashboard() {
         .single();
 
       if (!unitError && unitData) {
-        setUnitInfo(unitData);
+        const propertyRecord = Array.isArray(unitData.properties) ? unitData.properties[0] : unitData.properties;
+        setUnitInfo({
+          id: unitData.id,
+          name: unitData.name,
+          type: unitData.type,
+          properties: {
+            name: propertyRecord?.name || '',
+            address: propertyRecord?.address || '',
+            landlord_id: propertyRecord?.landlord_id || '',
+            user_profiles: propertyRecord?.user_profiles || [],
+          },
+        });
       }
 
       // Load payments
@@ -351,6 +362,7 @@ export default function TenantPortalDashboard() {
 
   const upcomingPayment = payments.find(p => p.status === 'pending');
   const activeMaintenanceCount = maintenanceRequests.filter(r => r.status !== 'completed' && r.status !== 'cancelled').length;
+  const landlordProfile = unitInfo?.properties.user_profiles?.[0];
 
   const tabConfig = [
     { id: 'overview', label: t.tabs.overview, icon: Home },
@@ -543,16 +555,16 @@ export default function TenantPortalDashboard() {
                     <div className="flex items-center space-x-6">
                       <div className="flex items-center space-x-2">
                         <User className="w-4 h-4 text-gray-600" />
-                        <span className="text-gray-900">{unitInfo.properties.user_profiles.full_name}</span>
+                        <span className="text-gray-900">{landlordProfile?.full_name || '—'}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Mail className="w-4 h-4 text-gray-600" />
-                        <span className="text-gray-900">{unitInfo.properties.user_profiles.email}</span>
+                        <span className="text-gray-900">{landlordProfile?.email || '—'}</span>
                       </div>
-                      {unitInfo.properties.user_profiles.phone && (
+                      {landlordProfile?.phone && (
                         <div className="flex items-center space-x-2">
                           <Phone className="w-4 h-4 text-gray-600" />
-                          <span className="text-gray-900">{unitInfo.properties.user_profiles.phone}</span>
+                          <span className="text-gray-900">{landlordProfile.phone}</span>
                         </div>
                       )}
                     </div>

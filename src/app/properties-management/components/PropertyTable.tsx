@@ -24,6 +24,7 @@ interface PropertyTableProps {
   onAddUnit: (propertyId: string) => void;
   onViewTenants: (propertyId: string) => void;
   onBulkAction: (action: string, selectedIds: string[]) => void;
+  onEditProperty?: (propertyId: string) => void;
   className?: string;
 }
 
@@ -36,7 +37,8 @@ const PropertyTable = ({
   onAddUnit, 
   onViewTenants, 
   onBulkAction,
-  className = '' 
+  onEditProperty,
+  className = ''
 }: PropertyTableProps) => {
   const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
   const [sortField, setSortField] = useState<SortField>('name');
@@ -305,6 +307,15 @@ const PropertyTable = ({
                     >
                       <Icon name="UsersIcon" size={16} />
                     </button>
+                    {onEditProperty && (
+                      <button
+                        onClick={() => onEditProperty(property.id)}
+                        className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors"
+                        title="Ingatlan szerkesztése"
+                      >
+                        <Icon name="PencilSquareIcon" size={16} />
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>

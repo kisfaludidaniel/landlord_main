@@ -1,12 +1,6 @@
-import type { Metadata } from 'next';
 import ContextualNavigation from '@/components/common/ContextualNavigation';
 import BreadcrumbNavigation from '@/components/common/BreadcrumbNavigation';
 import FinancialReportsInteractive from './components/FinancialReportsInteractive';
-
-export const metadata: Metadata = {
-  title: 'Pénzügyi Jelentések - Micro-Landlord OS Lite',
-  description: 'Átfogó pénzügyi elemzések és jelentések ingatlanportfólió teljesítményéhez magyar számviteli szabványokkal. Bevétel elemzés, kiadások nyomon követése, ÁFA számítások.',
-};
 
 export default function FinancialReportsPage() {
   return (

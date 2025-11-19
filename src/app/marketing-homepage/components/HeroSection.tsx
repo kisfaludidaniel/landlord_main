@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import AppImage from '@/components/ui/AppImage';
 import Icon from '@/components/ui/AppIcon';
 
@@ -34,14 +34,14 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href="/user-registration"
+                to="/user-registration"
                 className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 text-lg shadow-lg hover:shadow-xl">
                 Ingyenes regisztráció
                 <Icon name="ArrowRightIcon" size={20} className="ml-2" />
               </Link>
               
               <Link
-                href="/login-authentication"
+                to="/login-authentication"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-gray-700 font-semibold rounded-xl border-2 border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-lg shadow-sm">
                 Bejelentkezés
               </Link>

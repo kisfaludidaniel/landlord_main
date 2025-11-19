@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 import Icon from '@/components/ui/AppIcon';
 
@@ -180,8 +180,8 @@ const LoginForm = ({ onSubmit, isLoading = false, error }: LoginFormProps) => {
               />
               <span className="text-sm text-foreground">Emlékezzen rám</span>
             </label>
-            <Link 
-              href="/forgot-password" 
+            <Link
+              to="/forgot-password"
               className="text-sm text-primary hover:text-primary/80 transition-colors"
             >
               Elfelejtett jelszó?
@@ -234,8 +234,8 @@ const LoginForm = ({ onSubmit, isLoading = false, error }: LoginFormProps) => {
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground">
             Még nincs fiókja?{' '}
-            <Link 
-              href="/user-registration" 
+            <Link
+              to="/user-registration"
               className="text-primary hover:text-primary/80 font-medium transition-colors"
             >
               Regisztráljon itt

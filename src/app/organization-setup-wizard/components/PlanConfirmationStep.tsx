@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/AppIcon';
 
 interface PlanConfirmationStepProps {
@@ -240,11 +240,11 @@ const PlanConfirmationStep = ({ onPrevious, onComplete, selectedFeatures }: Plan
       <div className="text-center text-sm text-muted-foreground">
         <p>
           A folytatással elfogadja a{' '}
-          <Link href="/terms" className="text-primary hover:underline">
+          <Link to="/terms" className="text-primary hover:underline">
             Felhasználási Feltételeket
           </Link>{' '}
           és az{' '}
-          <Link href="/privacy" className="text-primary hover:underline">
+          <Link to="/privacy" className="text-primary hover:underline">
             Adatvédelmi Szabályzatot
           </Link>
           .

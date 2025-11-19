@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase/client';
 import { AppIcon } from '@/components/ui/AppIcon';
 
@@ -43,7 +43,7 @@ interface InvoiceData {
 }
 
 const InvoiceGenerationPage: React.FC = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [properties, setProperties] = useState<Property[]>([]);
   const [units, setUnits] = useState<Unit[]>([]);
   const [tenants, setTenants] = useState<Tenant[]>([]);
@@ -209,7 +209,7 @@ const InvoiceGenerationPage: React.FC = () => {
       });
 
       alert(`Számla sikeresen ${asDraft ? 'piszkozatként mentve' : 'elküldve'}!`);
-      router.push('/main-dashboard');
+      navigate('/main-dashboard');
     } catch (error) {
       console.error('Error saving invoice:', error);
       alert('Hiba történt a számla mentése során.');
@@ -244,7 +244,7 @@ const InvoiceGenerationPage: React.FC = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => router.back()}
+                onClick={() => navigate(-1)}
                 className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 <AppIcon name="ArrowLeftIcon" className="h-5 w-5" />
@@ -533,7 +533,7 @@ const InvoiceGenerationPage: React.FC = () => {
         {/* Action Buttons */}
         <div className="mt-8 flex justify-end space-x-4">
           <button
-            onClick={() => router.back()}
+            onClick={() => navigate(-1)}
             className="px-6 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
           >
             Mégsem

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { createSupabaseClient } from '@/lib/supabase/client';
 import { Search, Filter, Edit, X, Check, AlertCircle, Calendar, User, Package } from 'lucide-react';
 import type { Database } from '@/types/database.types';
 
@@ -19,7 +19,7 @@ interface SubscriptionEditForm {
 }
 
 export default function SubscriptionsManagementPage() {
-  const supabase = createClient()
+  const supabase = createSupabaseClient();
   
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [filteredSubscriptions, setFilteredSubscriptions] = useState<Subscription[]>([])

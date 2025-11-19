@@ -1,13 +1,12 @@
 'use client';
 
 import { HomeIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Suspense } from 'react';
 
 // Component that uses useSearchParams wrapped in Suspense
 function RoleSelectionContent() {
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
   const planId = searchParams.get('planId');
 
   // Helper function to build registration URLs
@@ -39,8 +38,8 @@ function RoleSelectionContent() {
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
           
           {/* Landlord Card */}
-          <Link 
-            href={buildRegistrationUrl('LANDLORD')}
+          <Link
+            to={buildRegistrationUrl('LANDLORD')}
             className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl border-2 border-transparent hover:border-blue-500 transition-all duration-300 transform hover:-translate-y-1"
           >
             <div className="p-8">
@@ -98,8 +97,8 @@ function RoleSelectionContent() {
           </Link>
 
           {/* Tenant Card */}
-          <Link 
-            href={buildRegistrationUrl('TENANT')}
+          <Link
+            to={buildRegistrationUrl('TENANT')}
             className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl border-2 border-transparent hover:border-green-500 transition-all duration-300 transform hover:-translate-y-1"
           >
             <div className="p-8">
@@ -176,8 +175,8 @@ function RoleSelectionContent() {
           <p className="text-gray-500 mb-4">
             Már rendelkezik fiókkal?
           </p>
-          <Link 
-            href="/login-authentication"
+          <Link
+            to="/login-authentication"
             className="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
           >
             Bejelentkezés

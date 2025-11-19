@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
  import Icon from'@/components/ui/AppIcon';
 
@@ -15,7 +15,7 @@ interface TenantFormData {
 }
 
 export default function TenantProfilePage() {
-  const router = useRouter()
+  const navigate = useNavigate();
   const { signUp } = useAuth()
   const [formData, setFormData] = useState<TenantFormData>({
     fullName: '',
@@ -26,19 +26,20 @@ export default function TenantProfilePage() {
     agreeToTerms: false,
     agreeToPrivacy: false
   })
-  const [errors, setErrors] = useState<Partial<TenantFormData>>({})
+  type TenantFormErrors = Partial<Record<keyof TenantFormData, string>>
+  const [errors, setErrors] = useState<TenantFormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     // Check if role is set
     const role = sessionStorage.getItem('onboarding_role')
     if (!role || role !== 'TENANT') {
-      router.push('/onboarding/role')
+      navigate('/onboarding/role')
     }
-  }, [router])
+  }, [navigate])
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<TenantFormData> = {}
+    const newErrors: TenantFormErrors = {}
 
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'A teljes név megadása kötelező'
@@ -110,7 +111,7 @@ export default function TenantProfilePage() {
       if (data.user) {
         // Clear onboarding data and redirect to tenant dashboard
         sessionStorage.removeItem('onboarding_role')
-        router.push('/tenant/dashboard')
+        navigate('/tenant/dashboard')
       }
     } catch (error) {
       console.error('Registration error:', error)
@@ -293,7 +294,7 @@ export default function TenantProfilePage() {
             <div className="flex items-center justify-between pt-6">
               <button
                 type="button"
-                onClick={() => router.push('/onboarding/role')}
+                onClick={() => navigate('/onboarding/role')}
                 className="px-6 py-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 ← Vissza

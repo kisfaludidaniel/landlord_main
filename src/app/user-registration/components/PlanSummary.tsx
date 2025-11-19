@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/AppIcon';
 import { PricingPlan, formatPrice, formatPropertyLimit, formatAiStatus } from '@/config/plans';
 
@@ -95,7 +95,7 @@ const PlanSummary = ({ selectedPlan }: PlanSummaryProps) => {
 
         <div className="border-t border-border pt-4">
           <Link
-            href="/marketing-homepage#pricing"
+            to="/marketing-homepage#pricing"
             className="flex items-center justify-center space-x-2 text-sm text-primary hover:text-primary/80 transition-colors"
           >
             <Icon name="ArrowPathIcon" size={16} />

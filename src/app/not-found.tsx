@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Icon from '@/components/ui/AppIcon';
 
@@ -25,14 +25,14 @@ export default function NotFound() {
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            href="/marketing-homepage"
+            to="/marketing-homepage"
             className="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 transition-colors"
           >
             <Icon name="HomeIcon" size={16} />
             {t('language') === 'hu' ? 'Vissza a főoldalra' : 'Back to Home'}
           </Link>
           <Link
-            href="/role-selection"
+            to="/role-selection"
             className="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 transition-colors"
           >
             <Icon name="UserPlusIcon" size={16} />

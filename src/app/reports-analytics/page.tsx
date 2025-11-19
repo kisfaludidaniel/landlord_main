@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/types/database.types';
+import { createSupabaseClient } from '@/lib/supabase/client';
 import Icon from '@/components/ui/AppIcon';
 
 interface ReportMetric {
@@ -40,7 +39,7 @@ const ReportsAnalytics = () => {
   const [dateRange, setDateRange] = useState<string>('30d');
   const [selectedChart, setSelectedChart] = useState<string>('revenue');
 
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createSupabaseClient();
 
   useEffect(() => {
     setIsHydrated(true);

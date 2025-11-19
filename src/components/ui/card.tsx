@@ -1,68 +1,30 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-const Card = () => {
-  React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.warn('Placeholder: Card is not implemented yet.');
-  }, []);
-  return (
-    <>
-  { /*Card */} 
- </>
-  );
-};
+const cn = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(' ');
 
-export { Card };
+type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
-const CardContent: React.FC = () => {
-  React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.warn('Placeholder: CardContent is not implemented yet.');
-  }, []);
-  return (
-    <div>
-      {/* CardContent placeholder */}
-    </div>
-  );
-};
+const Card = ({ className, ...props }: CardProps) => (
+  <div
+    className={cn('rounded-xl border border-border bg-card text-card-foreground shadow', className)}
+    {...props}
+  />
+);
 
-export { CardContent };
-const CardDescription: React.FC = () => {
-  React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.warn('Placeholder: CardDescription is not implemented yet.');
-  }, []);
-  return (
-    <div>
-      {/* CardDescription placeholder */}
-    </div>
-  );
-};
+const CardHeader = ({ className, ...props }: CardProps) => (
+  <div className={cn('flex flex-col space-y-1.5 p-6', className)} {...props} />
+);
 
-export { CardDescription };
-const CardHeader: React.FC = () => {
-  React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.warn('Placeholder: CardHeader is not implemented yet.');
-  }, []);
-  return (
-    <div>
-      {/* CardHeader placeholder */}
-    </div>
-  );
-};
+const CardTitle = ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+  <h3 className={cn('text-lg font-semibold leading-none tracking-tight', className)} {...props} />
+);
 
-export { CardHeader };
-const CardTitle: React.FC = () => {
-  React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.warn('Placeholder: CardTitle is not implemented yet.');
-  }, []);
-  return (
-    <div>
-      {/* CardTitle placeholder */}
-    </div>
-  );
-};
+const CardDescription = ({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
+  <p className={cn('text-sm text-muted-foreground', className)} {...props} />
+);
 
-export { CardTitle };
+const CardContent = ({ className, ...props }: CardProps) => (
+  <div className={cn('p-6 pt-0', className)} {...props} />
+);
+
+export { Card, CardHeader, CardTitle, CardDescription, CardContent };

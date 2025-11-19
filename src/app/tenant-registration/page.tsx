@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { createSupabaseClient } from '@/lib/supabase/client';
 import { ChevronLeftIcon, CheckCircleIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -86,9 +86,9 @@ function TenantRegistrationContent() {
   const [invitationValidated, setInvitationValidated] = useState(false)
   const [landlordInfo, setLandlordInfo] = useState<LandlordInfo | null>(null)
 
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const supabase = createClient()
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const supabase = createSupabaseClient();
 
   const form = useForm<TenantFormData>({
     resolver: zodResolver(tenantSchema),
@@ -179,7 +179,7 @@ function TenantRegistrationContent() {
     setSelectedRole(role)
     if (role === 'landlord') {
       // Redirect to landlord registration
-      router.push('/landlord-registration')
+      navigate('/landlord-registration')
     } else {
       // Continue with tenant registration
       setCurrentStep('tenant-details')
@@ -330,7 +330,7 @@ function TenantRegistrationContent() {
           <p className="text-sm text-gray-500">
             Már van fiókja? 
             <button 
-              onClick={() => router.push('/login-authentication')}
+              onClick={() => navigate('/login-authentication')}
               className="text-blue-600 hover:text-blue-700 font-medium ml-1"
             >
               Bejelentkezés
@@ -587,7 +587,7 @@ function TenantRegistrationContent() {
           <p className="text-sm text-gray-500">
             Már van fiókja?{' '}
             <button 
-              onClick={() => router.push('/login-authentication')}
+              onClick={() => navigate('/login-authentication')}
               className="text-green-600 hover:text-green-700 font-medium"
             >
               Bejelentkezés
@@ -630,14 +630,14 @@ function TenantRegistrationContent() {
 
         <div className="space-y-3">
           <button
-            onClick={() => router.push('/login-authentication')}
+            onClick={() => navigate('/login-authentication')}
             className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors"
           >
             Bejelentkezés
           </button>
 
           <button
-            onClick={() => router.push('/')}
+            onClick={() => navigate('/')}
             className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-200 transition-colors"
           >
             Vissza a főoldalra

@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/types/database.types';
+import { createSupabaseClient } from '@/lib/supabase/client';
 import Icon from '@/components/ui/AppIcon';
 
 interface UserProfile {
@@ -48,7 +47,7 @@ const UsersManagement = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [bulkSelected, setBulkSelected] = useState<string[]>([]);
 
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createSupabaseClient();
 
   useEffect(() => {
     setIsHydrated(true);
@@ -89,7 +88,7 @@ const UsersManagement = () => {
 
       if (usersError) throw usersError;
 
-      const formattedUsers: UserProfile[] = usersData?.map(user => ({
+      const formattedUsers: UserProfile[] = (usersData ?? []).map((user: any) => ({
         id: user.id,
         email: user.email,
         full_name: user.full_name,

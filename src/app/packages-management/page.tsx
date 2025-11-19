@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { createSupabaseClient } from '@/lib/supabase/client';
 import { Plus, Edit, Trash2, Save, X, AlertCircle, Package, DollarSign, Settings, Check } from 'lucide-react';
 import type { Database } from '@/types/database.types';
 
@@ -50,7 +50,7 @@ const featureLabels: Record<string, string> = {
 }
 
 export default function PackagesManagementPage() {
-  const supabase = createClient()
+  const supabase = createSupabaseClient();
   
   const [plans, setPlans] = useState<Plan[]>([])
   const [loading, setLoading] = useState(true)
