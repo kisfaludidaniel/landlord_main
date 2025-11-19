@@ -49,8 +49,7 @@ export interface TenantInviteExportData {
 export const exportPropertiesToCSV = (properties: PropertyExportData[]) => {
   const exportData = properties.map(formatPropertyForExport);
   const csv = Papa.unparse(exportData, {
-    header: true,
-    encoding: 'utf-8'
+    header: true
   });
   
   const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
@@ -84,8 +83,7 @@ export const exportPropertiesToXLSX = (properties: PropertyExportData[]) => {
 export const exportUnitsToCSV = (units: UnitExportData[]) => {
   const exportData = units.map(formatUnitForExport);
   const csv = Papa.unparse(exportData, {
-    header: true,
-    encoding: 'utf-8'
+    header: true
   });
   
   const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
@@ -119,8 +117,7 @@ export const exportUnitsToXLSX = (units: UnitExportData[]) => {
 export const exportTenantInvitesToCSV = (invites: TenantInviteExportData[]) => {
   const exportData = invites.map(formatTenantInviteForExport);
   const csv = Papa.unparse(exportData, {
-    header: true,
-    encoding: 'utf-8'
+    header: true
   });
   
   const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });

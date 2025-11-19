@@ -1,5 +1,4 @@
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/types/database.types';
+import { createSupabaseClient } from '@/lib/supabase/client';
 
 export type UserRole = 'ADMIN' | 'LANDLORD' | 'TENANT';
 
@@ -20,7 +19,7 @@ export interface AuthUser {
 }
 
 class AuthService {
-  private supabase = createClientComponentClient<Database>();
+  private supabase = createSupabaseClient();
 
   async signUp(data: SignUpData) {
     try {

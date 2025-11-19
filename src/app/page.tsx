@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
+import { Navigate } from 'react-router-dom';
 
 export default function RootPage() {
-  redirect('/marketing-homepage');
+  return <Navigate to="/marketing-homepage" replace />;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as HeroIcons from '@heroicons/react/24/outline';
 import * as HeroIconsSolid from '@heroicons/react/24/solid';
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
@@ -52,17 +52,5 @@ function Icon({
     );
 }
 
-export default Icon; 
-const AppIcon: React.FC = () => {
-  React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.warn('Placeholder: AppIcon is not implemented yet.');
-  }, []);
-  return (
-    <div>
-      {/* AppIcon placeholder */}
-    </div>
-  );
-};
-
-export { AppIcon };
+export default Icon;
+export { Icon as AppIcon };

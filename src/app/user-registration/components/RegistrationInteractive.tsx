@@ -4,20 +4,11 @@ import React, { useState, useEffect } from 'react';
 import RegistrationForm from './RegistrationForm';
 import PlanSummary from './PlanSummary';
 import SecurityInfo from './SecurityInfo';
-
-interface Plan {
-  id: string;
-  name: string;
-  price: string;
-  period: string;
-  description: string;
-  features: Array<{ name: string; included: boolean }>;
-  badge?: string;
-}
+import { PRICING_PLANS, type PricingPlan } from '@/config/plans';
 
 const RegistrationInteractive = () => {
   const [isHydrated, setIsHydrated] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<Plan | undefined>();
+  const [selectedPlan, setSelectedPlan] = useState<PricingPlan | undefined>();
 
   useEffect(() => {
     setIsHydrated(true);
@@ -28,45 +19,8 @@ const RegistrationInteractive = () => {
       const planId = urlParams.get('plan') || localStorage.getItem('selectedPlan');
       
       if (planId) {
-        // Mock plan data based on ID
-        const plans: Record<string, Plan> = {
-          'pro': {
-            id: 'pro',
-            name: 'Pro',
-            price: '4 990 Ft',
-            period: 'hónap',
-            description: 'Professzionális ingatlankezelőknek',
-            badge: 'Legnépszerűbb',
-            features: [
-              { name: 'Korlátlan ingatlan', included: true },
-              { name: 'Haladó bérlőkezelés', included: true },
-              { name: 'Automatikus számlázás', included: true },
-              { name: 'Prioritásos támogatás', included: true },
-              { name: 'Haladó jelentések', included: true },
-              { name: 'API hozzáférés', included: true },
-              { name: 'Egyedi integráció', included: false }
-            ]
-          },
-          'pro-plus': {
-            id: 'pro-plus',
-            name: 'Pro + Használat',
-            price: '4 990 Ft',
-            period: 'hónap',
-            description: 'Pro csomag + AI funkciók használat alapján',
-            badge: 'Legfejlettebb',
-            features: [
-              { name: 'Minden Pro funkció', included: true },
-              { name: 'AI szerződésgenerálás', included: true },
-              { name: 'AI mérőóra leolvasás', included: true },
-              { name: 'Egyedi integráció', included: true },
-              { name: 'Dedikált támogatás', included: true },
-              { name: 'Korlátlan API hívás', included: true },
-              { name: 'White-label megoldás', included: true }
-            ]
-          }
-        };
-        
-        setSelectedPlan(plans[planId]);
+        const plan = PRICING_PLANS.find((planOption) => planOption.id === planId);
+        setSelectedPlan(plan);
       }
     }
   }, []);

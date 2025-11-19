@@ -6,7 +6,7 @@ import Icon from '@/components/ui/AppIcon';
 interface Property {
   id: string;
   name: string;
-  type: 'lakas' | 'haz' | 'kereskedelmi' | 'iroda' | 'raktar' | 'tarsashaz' | 'egyeb';
+  propertyType: 'lakas' | 'haz' | 'kereskedelmi' | 'iroda' | 'raktar' | 'tarsashaz' | 'egyeb';
   buildings?: Building[];
   units?: Unit[];
 }
@@ -19,7 +19,8 @@ interface Building {
 
 interface Unit {
   id: string;
-  name: string;
+  name?: string;
+  number?: string;
   unit_type: string;
   isOccupied?: boolean;
 }
@@ -58,7 +59,7 @@ const TenantInviteModal: React.FC<TenantInviteModalProps> = ({
     if (!selectedPropertyData) return [];
 
     // For társasház type, get units from buildings
-    if (selectedPropertyData.type === 'tarsashaz') {
+    if (selectedPropertyData.propertyType === 'tarsashaz') {
       return selectedPropertyData.buildings?.flatMap(building => 
         building.units.filter(unit => !unit.isOccupied)
       ) || [];
@@ -182,7 +183,7 @@ const TenantInviteModal: React.FC<TenantInviteModalProps> = ({
                       <div>
                         <h4 className="font-medium text-foreground">{property.name}</h4>
                         <p className="text-sm text-muted-foreground capitalize">
-                          {property.type === 'tarsashaz' ? 'Társasház' : property.type}
+                          {property.propertyType === 'tarsashaz' ? 'Társasház' : property.propertyType}
                         </p>
                       </div>
                       <Icon name="ChevronRightIcon" size={20} className="text-muted-foreground" />
@@ -210,7 +211,7 @@ const TenantInviteModal: React.FC<TenantInviteModalProps> = ({
               </div>
 
               <div className="space-y-3">
-                {selectedPropertyData.type === 'tarsashaz' ? (
+                {selectedPropertyData.propertyType === 'tarsashaz' ? (
                   // Group by buildings for társasház
                   selectedPropertyData.buildings?.map((building) => (
                     <div key={building.id} className="space-y-2">
@@ -226,7 +227,7 @@ const TenantInviteModal: React.FC<TenantInviteModalProps> = ({
                               onChange={() => handleUnitToggle(unit.id)}
                               className="rounded border-border"
                             />
-                            <span className="text-sm text-foreground">{unit.name}</span>
+                            <span className="text-sm text-foreground">{unit.name || unit.number}</span>
                           </label>
                         ))}
                       </div>
@@ -243,7 +244,7 @@ const TenantInviteModal: React.FC<TenantInviteModalProps> = ({
                           onChange={() => handleUnitToggle(unit.id)}
                           className="rounded border-border"
                         />
-                        <span className="text-sm text-foreground">{unit.name}</span>
+                        <span className="text-sm text-foreground">{unit.name || unit.number}</span>
                       </label>
                     ))}
                   </div>

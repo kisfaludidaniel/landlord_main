@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, useLocation } from 'react-router-dom';
 import Icon from '@/components/ui/AppIcon';
 import LanguageSelector from './LanguageSelector';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -26,7 +25,7 @@ const ContextualNavigation = ({
   isInWizard = false,
   className = '' 
 }: ContextualNavigationProps) => {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { t } = useLanguage();
 
@@ -162,7 +161,7 @@ const ContextualNavigation = ({
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href={isAuthenticated ? "/main-dashboard" : "/marketing-homepage"} className="flex items-center space-x-2">
+          <Link to={isAuthenticated ? "/main-dashboard" : "/marketing-homepage"} className="flex items-center space-x-2">
             <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-lg">
               <Icon name="HomeIcon" size={20} className="text-primary-foreground" />
             </div>
@@ -177,7 +176,7 @@ const ContextualNavigation = ({
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  to={item.href}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                     item.isActive
                       ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -204,14 +203,14 @@ const ContextualNavigation = ({
             {/* Auth Actions for Public Routes */}
             {isPublicRoute && (
               <div className="flex items-center space-x-4">
-                <Link 
-                  href="/login-authentication"
+                <Link
+                  to="/login-authentication"
                   className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
                 >
                   {t('auth.login')}
                 </Link>
-                <Link 
-                  href="/role-selection"
+                <Link
+                  to="/role-selection"
                   className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 transition-colors duration-200"
                 >
                   {t('auth.register')}
@@ -238,7 +237,7 @@ const ContextualNavigation = ({
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  to={item.href}
                   className={`flex items-center space-x-3 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
                     item.isActive
                       ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground hover:bg-muted'

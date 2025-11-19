@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, useLocation } from 'react-router-dom';
 import Icon from '@/components/ui/AppIcon';
 
 interface BreadcrumbItem {
@@ -22,7 +21,7 @@ const BreadcrumbNavigation = ({
   separator,
   className = '' 
 }: BreadcrumbNavigationProps) => {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
 
   // Route mapping for Hungarian labels
   const routeLabels: Record<string, string> = {
@@ -90,7 +89,7 @@ const BreadcrumbNavigation = ({
             
             {item.href && !item.isActive ? (
               <Link
-                href={item.href}
+                to={item.href}
                 className="font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
               >
                 {item.label}

@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/AppIcon';
 
 interface FooterLink {
@@ -72,7 +72,7 @@ const FooterSection = ({ className = '' }: FooterSectionProps) => {
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
           {/* Brand Section */}
           <div className="col-span-2">
-            <Link href="/marketing-homepage" className="flex items-center space-x-2 mb-6">
+            <Link to="/marketing-homepage" className="flex items-center space-x-2 mb-6">
               <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-lg">
                 <Icon name="HomeIcon" size={20} className="text-primary-foreground" />
               </div>
@@ -111,7 +111,7 @@ const FooterSection = ({ className = '' }: FooterSectionProps) => {
                 {section.links.map((link) => (
                   <li key={link.label}>
                     <Link
-                      href={link.href}
+                      to={link.href}
                       className="text-secondary-foreground/80 hover:text-secondary-foreground transition-colors duration-200 text-sm"
                     >
                       {link.label}
@@ -152,19 +152,19 @@ const FooterSection = ({ className = '' }: FooterSectionProps) => {
             
             <div className="flex items-center space-x-6 text-sm">
               <Link
-                href="/privacy"
+                to="/privacy"
                 className="text-secondary-foreground/80 hover:text-secondary-foreground transition-colors duration-200"
               >
                 Adatvédelem
               </Link>
               <Link
-                href="/terms"
+                to="/terms"
                 className="text-secondary-foreground/80 hover:text-secondary-foreground transition-colors duration-200"
               >
                 Feltételek
               </Link>
               <Link
-                href="/cookies"
+                to="/cookies"
                 className="text-secondary-foreground/80 hover:text-secondary-foreground transition-colors duration-200"
               >
                 Sütik

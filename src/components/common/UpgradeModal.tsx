@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/AppIcon';
 import { PricingPlan, PRICING_PLANS, formatPrice, formatPropertyLimit } from '@/config/plans';
 
@@ -130,7 +130,7 @@ const UpgradeModal = ({
           {/* Action buttons */}
           <div className="bg-muted/50 px-6 py-4 sm:flex sm:flex-row-reverse">
             <Link
-              href="/subscription"
+              to="/subscription"
               className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:ml-3 sm:w-auto sm:text-sm transition-colors"
               onClick={onClose}
             >

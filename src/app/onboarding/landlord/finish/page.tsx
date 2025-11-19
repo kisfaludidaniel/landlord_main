@@ -1,12 +1,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { plans } from '@/config/plans';
- import Icon from'@/components/ui/AppIcon';
+import { PRICING_PLANS } from '@/config/plans';
+import Icon from '@/components/ui/AppIcon';
 
 export default function LandlordFinishPage() {
-  const router = useRouter()
+  const navigate = useNavigate();
   const { user, profile } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState<any>(null)
@@ -21,16 +21,16 @@ export default function LandlordFinishPage() {
   useEffect(() => {
     // Check authentication and load selected plan
     if (!user || profile?.role !== 'LANDLORD') {
-      router.push('/onboarding/role')
+      navigate('/onboarding/role')
       return
     }
 
     const planId = sessionStorage.getItem('onboarding_selected_plan')
     if (planId) {
-      const plan = plans.find(p => p.id === planId)
+      const plan = PRICING_PLANS.find((planOption) => planOption.id === planId)
       setSelectedPlan(plan)
     }
-  }, [user, profile, router])
+  }, [user, profile, navigate])
 
   const handleFinish = async () => {
     setIsLoading(true)
@@ -41,7 +41,7 @@ export default function LandlordFinishPage() {
       sessionStorage.removeItem('onboarding_selected_plan')
 
       // Redirect to landlord dashboard
-      router.push('/main-dashboard')
+      navigate('/main-dashboard')
     } catch (error) {
       console.error('Finish onboarding error:', error)
     } finally {

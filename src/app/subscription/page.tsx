@@ -1,12 +1,6 @@
-import type { Metadata } from 'next';
 import ContextualNavigation from '@/components/common/ContextualNavigation';
 import BreadcrumbNavigation from '@/components/common/BreadcrumbNavigation';
 import SubscriptionInteractive from './components/SubscriptionInteractive';
-
-export const metadata: Metadata = {
-  title: 'Előfizetés - Micro-Landlord OS Lite',
-  description: 'Kezelje előfizetését, tekintse meg jelenlegi csomagját és váltson nagyobb csomagra.',
-};
 
 export default function SubscriptionPage() {
   return (

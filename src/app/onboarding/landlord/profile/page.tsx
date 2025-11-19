@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
  import Icon from'@/components/ui/AppIcon';
 
@@ -18,7 +18,7 @@ interface ProfileFormData {
 }
 
 export default function LandlordProfilePage() {
-  const router = useRouter()
+  const navigate = useNavigate();
   const { signUp } = useAuth()
   const [formData, setFormData] = useState<ProfileFormData>({
     fullName: '',
@@ -32,7 +32,8 @@ export default function LandlordProfilePage() {
     agreeToTerms: false,
     agreeToPrivacy: false
   })
-  const [errors, setErrors] = useState<Partial<ProfileFormData>>({})
+  type ProfileFormErrors = Partial<Record<keyof ProfileFormData, string>>
+  const [errors, setErrors] = useState<ProfileFormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showCompanySection, setShowCompanySection] = useState(false)
 
@@ -40,12 +41,12 @@ export default function LandlordProfilePage() {
     // Check if role is set
     const role = sessionStorage.getItem('onboarding_role')
     if (!role || role !== 'LANDLORD') {
-      router.push('/onboarding/role')
+      navigate('/onboarding/role')
     }
-  }, [router])
+  }, [navigate])
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<ProfileFormData> = {}
+    const newErrors: ProfileFormErrors = {}
 
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'A teljes név megadása kötelező'
@@ -120,7 +121,7 @@ export default function LandlordProfilePage() {
       if (data.user) {
         // Store profile data for next step
         sessionStorage.setItem('onboarding_profile', JSON.stringify(formData))
-        router.push('/onboarding/landlord/plan')
+        navigate('/onboarding/landlord/plan')
       }
     } catch (error) {
       console.error('Registration error:', error)
@@ -358,7 +359,7 @@ export default function LandlordProfilePage() {
             <div className="flex items-center justify-between pt-6">
               <button
                 type="button"
-                onClick={() => router.push('/onboarding/role')}
+                onClick={() => navigate('/onboarding/role')}
                 className="px-6 py-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 ← Vissza

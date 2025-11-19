@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/types/database.types';
+import { createSupabaseClient } from '@/lib/supabase/client';
 import Icon from '@/components/ui/AppIcon';
 
 interface SubscriptionPlan {
@@ -48,7 +47,7 @@ const SubscriptionPackageManagement = () => {
   const [selectedPlan, setSelectedPlan] = useState<string>('all');
   const [analytics, setAnalytics] = useState<PackageAnalytics | null>(null);
 
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createSupabaseClient();
 
   const defaultFormData: PackageFormData = {
     name: '',
@@ -109,7 +108,7 @@ const SubscriptionPackageManagement = () => {
 
       // Load subscriber counts for each plan
       const plansWithCounts = await Promise.all(
-        (plansData || []).map(async (plan) => {
+        (plansData || []).map(async (plan: SubscriptionPlan) => {
           const { count } = await supabase
             .from('subscriptions')
             .select('*', { count: 'exact', head: true })
@@ -143,12 +142,12 @@ const SubscriptionPackageManagement = () => {
         .eq('status', 'active');
 
       if (subscriptions) {
-        const totalRevenue = subscriptions.reduce((sum, sub) => 
+        const totalRevenue = subscriptions.reduce((sum: number, sub: any) =>
           sum + (sub.plans?.price_huf || 0), 0
         );
 
         const featurePopularity: Record<string, number> = {};
-        subscriptions.forEach(sub => {
+        subscriptions.forEach((sub: any) => {
           if (sub.plans?.features) {
             sub.plans.features.forEach((feature: string) => {
               featurePopularity[feature] = (featurePopularity[feature] || 0) + 1;

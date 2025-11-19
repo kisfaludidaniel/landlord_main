@@ -1,10 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
  import Icon from'@/components/ui/AppIcon';
 
 export default function RoleSelectionPage() {
-  const router = useRouter()
+  const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState<'LANDLORD' | 'TENANT' | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -21,9 +21,9 @@ export default function RoleSelectionPage() {
       sessionStorage.setItem('onboarding_role', selectedRole)
       
       if (selectedRole === 'LANDLORD') {
-        router.push('/onboarding/landlord/profile')
+        navigate('/onboarding/landlord/profile')
       } else {
-        router.push('/onboarding/tenant/profile')
+        navigate('/onboarding/tenant/profile')
       }
     } catch (error) {
       console.error('Navigation error:', error)
@@ -168,7 +168,7 @@ export default function RoleSelectionPage() {
         {/* Back to Login */}
         <div className="text-center mt-6">
           <button
-            onClick={() => router.push('/login-authentication')}
+            onClick={() => navigate('/login-authentication')}
             className="text-muted-foreground hover:text-foreground transition-colors text-sm"
           >
             ← Vissza a bejelentkezéshez

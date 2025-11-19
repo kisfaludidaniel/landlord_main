@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { createSupabaseClient } from '@/lib/supabase/client';
 import { 
   Card, 
   CardContent, 
@@ -54,7 +54,7 @@ const FinancialReportsInteractive: React.FC = () => {
   const [propertyData, setPropertyData] = useState<PropertyPerformance[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPeriod, setSelectedPeriod] = useState('3months');
-  const supabase = createClient();
+  const supabase = createSupabaseClient();
 
   useEffect(() => {
     fetchFinancialData();

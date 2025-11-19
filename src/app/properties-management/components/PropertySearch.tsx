@@ -8,15 +8,17 @@ interface PropertySearchProps {
   onExport: () => void;
   onAddProperty: () => void;
   onAIFeature?: (feature: string) => void;
+  onTenantInvite?: () => void;
   canUseAI?: boolean;
 }
 
 const PropertySearch = ({ 
   onSearch, 
   onExport, 
-  onAddProperty, 
-  onAIFeature, 
-  canUseAI = false 
+  onAddProperty,
+  onAIFeature,
+  onTenantInvite,
+  canUseAI = false
 }: PropertySearchProps) => {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -76,6 +78,16 @@ const PropertySearch = ({
           <Icon name="ArrowDownTrayIcon" size={16} className="mr-2" />
           Export
         </button>
+
+        {onTenantInvite && (
+          <button
+            onClick={onTenantInvite}
+            className="inline-flex items-center px-3 py-2 border border-border rounded-md text-sm font-medium text-foreground bg-background hover:bg-muted transition-colors"
+          >
+            <Icon name="EnvelopeIcon" size={16} className="mr-2" />
+            Meghívás
+          </button>
+        )}
 
         <button
           onClick={onAddProperty}

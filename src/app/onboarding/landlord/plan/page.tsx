@@ -1,12 +1,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { PRICING_PLANS, formatPrice, formatPropertyLimit } from '@/config/plans';
 import Icon from '@/components/ui/AppIcon';
 
 export default function LandlordPlanPage() {
-  const router = useRouter()
+  const navigate = useNavigate();
   const { user, profile } = useAuth()
   const [selectedPlan, setSelectedPlan] = useState<string>('starter')
   const [isLoading, setIsLoading] = useState(false)
@@ -14,15 +14,15 @@ export default function LandlordPlanPage() {
   useEffect(() => {
     // Check if user is authenticated and has landlord role
     if (!user) {
-      router.push('/onboarding/role')
+      navigate('/onboarding/role')
       return
     }
 
     if (profile?.role !== 'LANDLORD') {
-      router.push('/onboarding/role')
+      navigate('/onboarding/role')
       return
     }
-  }, [user, profile, router])
+  }, [user, profile, navigate])
 
   const handlePlanSelect = (planId: string) => {
     setSelectedPlan(planId)
@@ -38,7 +38,7 @@ export default function LandlordPlanPage() {
       
       // For now, redirect to finish step
       // In a real implementation, this would handle Stripe subscription creation
-      router.push('/onboarding/landlord/finish')
+      navigate('/onboarding/landlord/finish')
     } catch (error) {
       console.error('Plan selection error:', error)
     } finally {
@@ -188,7 +188,7 @@ export default function LandlordPlanPage() {
         {/* Action Buttons */}
         <div className="flex items-center justify-between">
           <button
-            onClick={() => router.push('/onboarding/landlord/profile')}
+            onClick={() => navigate('/onboarding/landlord/profile')}
             className="px-6 py-2 text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-2"
           >
             <Icon name="ArrowLeftIcon" size={16} />

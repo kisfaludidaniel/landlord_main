@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { createClient } from '@/lib/supabase/client';
+import { createSupabaseClient } from '@/lib/supabase/client';
 import { Settings, Palette, Globe, Mail, Database, Bell, Shield, Save, TestTube, RefreshCw, AlertCircle, CheckCircle, BarChart3 } from 'lucide-react';
 import Icon from '@/components/ui/AppIcon';
 
@@ -36,7 +36,7 @@ export default function SystemSettingsConfiguration() {
   const [notifications, setNotifications] = useState<{ type: 'success' | 'error' | 'info'; message: string }[]>([]);
   const [testEmailResult, setTestEmailResult] = useState<string>('');
 
-  const supabase = createClient();
+  const supabase = createSupabaseClient();
 
   // Language content
   const content = {

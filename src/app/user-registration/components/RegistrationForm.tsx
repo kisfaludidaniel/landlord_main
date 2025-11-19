@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Icon from '@/components/ui/AppIcon';
@@ -35,8 +34,8 @@ interface PasswordStrength {
 }
 
 const RegistrationForm = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [isHydrated, setIsHydrated] = useState(false);
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
   const [formData, setFormData] = useState<FormData>({
@@ -63,11 +62,11 @@ const RegistrationForm = () => {
     // Get role from URL params and redirect if not found
     const role = searchParams?.get('role') as UserRole;
     if (!role || (role !== 'LANDLORD' && role !== 'TENANT')) {
-      router.push('/role-selection');
+      navigate('/role-selection');
       return;
     }
     setSelectedRole(role);
-  }, [searchParams, router]);
+  }, [searchParams, navigate]);
 
   const calculatePasswordStrength = (password: string): PasswordStrength => {
     let score = 0;
@@ -186,7 +185,7 @@ const RegistrationForm = () => {
     
     try {
       // Check if test users are allowed
-      const allowTestUsers = process.env.NEXT_PUBLIC_ALLOW_TEST_USERS === 'true';
+      const allowTestUsers = import.meta.env.VITE_ALLOW_TEST_USERS === 'true';
       
       if (!allowTestUsers && formData.email.includes('test')) {
         // throw new Error('Test felhasználók regisztrációja jelenleg nem engedélyezett');
@@ -209,9 +208,9 @@ const RegistrationForm = () => {
       
       // Redirect based on role
       if (role === 'TENANT') {
-        router.push('/tenant/dashboard');
+        navigate('/tenant/dashboard');
       } else {
-        router.push('/organization-setup-wizard');
+        navigate('/organization-setup-wizard');
       }
       
     } catch (error: any) {
@@ -487,7 +486,7 @@ const RegistrationForm = () => {
               />
               <label htmlFor="agreeToTerms" className="text-sm text-gray-700">
                 Elfogadom az{' '}
-                <Link href="/terms" className="text-blue-600 hover:text-blue-700 hover:underline">
+                <Link to="/terms" className="text-blue-600 hover:text-blue-700 hover:underline">
                   Általános Szerződési Feltételeket
                 </Link>{' '}
                 *
@@ -510,7 +509,7 @@ const RegistrationForm = () => {
               />
               <label htmlFor="agreeToPrivacy" className="text-sm text-gray-700">
                 Elfogadom az{' '}
-                <Link href="/privacy" className="text-blue-600 hover:text-blue-700 hover:underline">
+                <Link to="/privacy" className="text-blue-600 hover:text-blue-700 hover:underline">
                   Adatvédelmi Szabályzatot
                 </Link>{' '}
                 *
@@ -545,7 +544,7 @@ const RegistrationForm = () => {
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             Nem megfelelő szerepkör?{' '}
-            <Link href="/role-selection" className="text-blue-600 hover:text-blue-700 hover:underline font-medium">
+            <Link to="/role-selection" className="text-blue-600 hover:text-blue-700 hover:underline font-medium">
               Válasszon másik szerepkört
             </Link>
           </p>
@@ -555,7 +554,7 @@ const RegistrationForm = () => {
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
             Már van fiókja?{' '}
-            <Link href="/login-authentication" className="nav-link font-medium">
+            <Link to="/login-authentication" className="nav-link font-medium">
               Bejelentkezés
             </Link>
           </p>

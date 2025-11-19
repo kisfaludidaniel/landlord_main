@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
@@ -236,8 +236,8 @@ const CompanyDataModal: React.FC<CompanyDataModalProps> = ({
 };
 
 export default function EnhancedRegistrationContent() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const { signUp } = useAuth();
 
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
@@ -262,7 +262,8 @@ export default function EnhancedRegistrationContent() {
     language: 'hu'
   });
 
-  const [errors, setErrors] = useState<Partial<RegistrationData>>({});
+  type RegistrationErrors = Partial<Record<keyof RegistrationData, string>>;
+  const [errors, setErrors] = useState<RegistrationErrors>({});
   const t = translations[formData.language];
 
   // Load selected plan on mount
@@ -294,7 +295,7 @@ export default function EnhancedRegistrationContent() {
   };
 
   const validateForm = () => {
-    const newErrors: Partial<RegistrationData> = {};
+    const newErrors: RegistrationErrors = {};
 
     if (!formData.fullName.trim()) {
       newErrors.fullName = t.fullNameRequired;
@@ -347,10 +348,10 @@ export default function EnhancedRegistrationContent() {
       const profileData = {
         fullName: formData.fullName.trim(),
         role: 'LANDLORD' as const,
-        phone: formData.phone.trim() || null,
-        companyName: formData.companyName.trim() || null,
-        companyVatId: formData.companyVatId.trim() || null,
-        companyAddress: formData.companyAddress.trim() || null
+        phone: formData.phone.trim() || undefined,
+        companyName: formData.companyName.trim() || undefined,
+        companyVatId: formData.companyVatId.trim() || undefined,
+        companyAddress: formData.companyAddress.trim() || undefined,
       };
 
       const { data, error } = await signUp(formData.email, formData.password, profileData);
@@ -370,7 +371,7 @@ export default function EnhancedRegistrationContent() {
         toast.success(t.emailSent);
       } else if (data?.session) {
         // Auto-confirmed, redirect to dashboard
-        router.push('/main-dashboard');
+        navigate('/main-dashboard');
       }
 
     } catch (error) {
@@ -444,7 +445,7 @@ export default function EnhancedRegistrationContent() {
           </div>
 
           <button
-            onClick={() => router.push('/login-authentication')}
+            onClick={() => navigate('/login-authentication')}
             className="text-gray-500 hover:text-gray-700 text-sm flex items-center justify-center gap-2"
           >
             <ArrowLeftIcon className="w-4 h-4" />
@@ -462,7 +463,7 @@ export default function EnhancedRegistrationContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => router.back()}
+              onClick={() => navigate(-1)}
               className="text-gray-500 hover:text-gray-700"
             >
               <ArrowLeftIcon className="w-5 h-5" />

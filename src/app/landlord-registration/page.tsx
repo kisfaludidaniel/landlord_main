@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { ArrowLeftIcon, CheckCircleIcon, ExclamationTriangleIcon, HomeIcon, BuildingOfficeIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useForm, type Resolver, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import toast, { Toaster } from 'react-hot-toast';
@@ -44,7 +43,7 @@ const landlordSchema = z.object({
   path: ["companyName"],
 });
 
-type FormData = z.infer<typeof landlordSchema>;
+type LandlordFormData = z.infer<typeof landlordSchema>;
 
 // Password strength calculator
 const calculatePasswordStrength = (password: string): { score: number; feedback: string; color: string } => {
@@ -88,16 +87,16 @@ const calculatePasswordStrength = (password: string): { score: number; feedback:
 };
 
 function LandlordRegistrationContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [currentStep, setCurrentStep] = useState(0); // Start with role confirmation (step 0)
   const [isLoading, setIsLoading] = useState(false);
   const [showCompanyWarning, setShowCompanyWarning] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
-  const form = useForm<FormData>({
-    resolver: zodResolver(landlordSchema),
+  const form = useForm<LandlordFormData>({
+    resolver: zodResolver(landlordSchema) as Resolver<LandlordFormData>,
     defaultValues: {
       fullName: '',
       email: '',
@@ -155,7 +154,7 @@ function LandlordRegistrationContent() {
       return;
     }
     
-    const fieldsToValidate = getFieldsForStep(currentStep);
+    const fieldsToValidate = getFieldsForStep(currentStep) as Array<keyof LandlordFormData>;
     
     form.trigger(fieldsToValidate).then((isValid) => {
       if (isValid) {
@@ -171,7 +170,7 @@ function LandlordRegistrationContent() {
     });
   };
 
-  const getFieldsForStep = (step: number): (keyof FormData)[] => {
+  const getFieldsForStep = (step: number): Array<keyof LandlordFormData> => {
     switch (step) {
       case 1:
         return ['fullName', 'email', 'password', 'confirmPassword'];
@@ -184,7 +183,7 @@ function LandlordRegistrationContent() {
     }
   };
 
-  const handleSubmit = async (data: FormData) => {
+  const handleSubmit: SubmitHandler<LandlordFormData> = async (data) => {
     setIsLoading(true);
     
     try {
@@ -201,7 +200,7 @@ function LandlordRegistrationContent() {
       toast.success('Regisztráció sikeres! Átirányítás...');
       
       // Redirect to organization setup with plan info
-      await router.push(`/organization-setup-wizard?plan=${data.selectedPlanId}&role=landlord`);
+      navigate(`/organization-setup-wizard?plan=${data.selectedPlanId}&role=landlord`);
     } catch (error) {
       console.error('Registration error:', error);
       toast.error('Hiba történt a regisztráció során. Kérem, próbálja újra.');
@@ -283,8 +282,8 @@ function LandlordRegistrationContent() {
                 <p className="text-sm text-gray-600 mb-3">
                   Mégsem főbérlő? Váltson bérlői regisztrációra:
                 </p>
-                <Link 
-                  href="/tenant-registration"
+                <Link
+                  to="/tenant-registration"
                   className="inline-flex items-center px-4 py-2 border border-green-500 rounded-lg text-green-600 hover:bg-green-50 transition-colors"
                 >
                   <HomeIcon className="w-4 h-4 mr-2" />
@@ -297,8 +296,8 @@ function LandlordRegistrationContent() {
           {/* Navigation Buttons */}
           <div className="max-w-2xl mx-auto mt-8">
             <div className="flex justify-between items-center">
-              <Link 
-                href="/role-selection"
+              <Link
+                to="/role-selection"
                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 Vissza a szerepválasztáshoz
@@ -318,7 +317,7 @@ function LandlordRegistrationContent() {
           <div className="text-center mt-8">
             <p className="text-gray-600">
               Már rendelkezik fiókkal?{' '}
-              <Link href="/login-authentication" className="text-blue-600 hover:underline">
+              <Link to="/login-authentication" className="text-blue-600 hover:underline">
                 Bejelentkezés
               </Link>
             </p>
@@ -897,7 +896,7 @@ function LandlordRegistrationContent() {
           <div className="text-center mt-6">
             <p className="text-gray-600">
               Már rendelkezik fiókkal?{' '}
-              <Link href="/login-authentication" className="text-blue-600 hover:underline">
+              <Link to="/login-authentication" className="text-blue-600 hover:underline">
                 Bejelentkezés
               </Link>
             </p>

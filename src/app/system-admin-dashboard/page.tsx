@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import ContextualNavigation from '@/components/common/ContextualNavigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Icon from '@/components/ui/AppIcon';
@@ -158,7 +158,7 @@ export default function SystemAdminDashboard() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {adminActions.map((action) => (
-              <Link key={action.href} href={action.href}>
+              <Link key={action.href} to={action.href}>
                 <Card className="p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer">
                   <div className="flex items-center mb-4">
                     <div className={`w-10 h-10 rounded-lg ${action.color} flex items-center justify-center mr-3`}>

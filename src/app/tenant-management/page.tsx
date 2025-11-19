@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase/client';
 import { AppIcon } from '@/components/ui/AppIcon';
 
@@ -46,7 +46,7 @@ interface TenantWithDetails extends Tenant {
 }
 
 const TenantManagementPage: React.FC = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [tenants, setTenants] = useState<TenantWithDetails[]>([]);
   const [invites, setInvites] = useState<TenantInvite[]>([]);
   const [loading, setLoading] = useState(true);
@@ -272,7 +272,7 @@ const TenantManagementPage: React.FC = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => router.back()}
+                onClick={() => navigate(-1)}
                 className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 <AppIcon name="ArrowLeftIcon" className="h-5 w-5" />

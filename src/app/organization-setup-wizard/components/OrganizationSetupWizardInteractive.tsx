@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ContextualNavigation from '@/components/common/ContextualNavigation';
 import ProgressIndicator from '@/components/common/ProgressIndicator';
 import OrganizationDetailsStep from './OrganizationDetailsStep';
@@ -69,7 +69,7 @@ interface FeaturePreferences {
 }
 
 const OrganizationSetupWizardInteractive = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -113,6 +113,14 @@ const OrganizationSetupWizardInteractive = () => {
     enableAutomatedReminders: false,
     enableTwoFactorAuth: true
   });
+
+  const featurePreferencesRecord = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries(featurePreferences).map(([key, value]) => [key, value])
+      ) as Record<string, boolean>,
+    [featurePreferences]
+  );
 
   useEffect(() => {
     setIsHydrated(true);
@@ -210,7 +218,7 @@ const OrganizationSetupWizardInteractive = () => {
     }
     
     // Redirect to main dashboard
-    router.push('/main-dashboard');
+    navigate('/main-dashboard');
   };
 
   if (!isHydrated) {
@@ -275,14 +283,14 @@ const OrganizationSetupWizardInteractive = () => {
             onPrevious={handlePrevious}
           />
         );
-      case 5:
-        return (
-          <PlanConfirmationStep
-            onPrevious={handlePrevious}
-            onComplete={handleComplete}
-            selectedFeatures={featurePreferences}
-          />
-        );
+        case 5:
+          return (
+            <PlanConfirmationStep
+              onPrevious={handlePrevious}
+              onComplete={handleComplete}
+              selectedFeatures={featurePreferencesRecord}
+            />
+          );
       default:
         return null;
     }
