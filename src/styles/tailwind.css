@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom components using @apply directive */
+@layer components {
+  /* Form input styles with original design */
+  .form-input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 transition-colors;
+  }
+
+  .form-input-success {
+    @apply border-green-500 focus:ring-green-200 focus:border-green-500;
+  }
+
+  .form-input-error {
+    @apply border-red-500 focus:ring-red-200 focus:border-red-500;
+  }
+
+  /* Button styles with brand colors */
+  .btn-primary {
+    @apply px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm hover:shadow-md;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 border-2 border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all font-medium;
+  }
+
+  .btn-success {
+    @apply px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium shadow-sm;
+  }
+
+  .btn-loading {
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Modern card styles */
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow;
+  }
+
+  .card-header {
+    @apply mb-6 pb-4 border-b border-gray-100;
+  }
+
+  .card-title {
+    @apply text-xl font-semibold text-gray-900 mb-2;
+  }
+
+  .card-description {
+    @apply text-gray-600 leading-relaxed;
+  }
+
+  /* Registration and form containers */
+  .registration-container {
+    @apply min-h-screen bg-gray-50;
+  }
+
+  .registration-header {
+    @apply bg-white border-b shadow-sm;
+  }
+
+  /* Password strength indicator */
+  .password-strength-bar {
+    @apply flex-1 bg-gray-200 rounded-full h-2;
+  }
+
+  .password-strength-fill {
+    @apply h-2 rounded-full transition-all duration-300;
+  }
+
+  /* Role selection styles with modern gradients */
+  .role-card {
+    @apply cursor-pointer rounded-xl p-8 text-white transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+
+  .role-card-landlord {
+    @apply bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700;
+  }
+
+  .role-card-tenant {
+    @apply bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700;
+  }
+
+  .role-card-icon {
+    @apply w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors;
+  }
+
+  /* Modern pricing card styles */
+  .pricing-card {
+    @apply relative bg-white border-2 border-gray-200 rounded-lg p-6 cursor-pointer transition-all hover:border-blue-300 hover:shadow-lg;
+  }
+
+  .pricing-card-selected {
+    @apply border-blue-500 bg-blue-50 shadow-md;
+  }
+
+  .pricing-card-recommended {
+    @apply ring-2 ring-green-200 border-green-300;
+  }
+
+  /* Alert styles with icons */
+  .alert {
+    @apply rounded-lg p-4 border flex items-start space-x-3;
+  }
+
+  .alert-info {
+    @apply bg-blue-50 border-blue-200 text-blue-800;
+  }
+
+  .alert-success {
+    @apply bg-green-50 border-green-200 text-green-800;
+  }
+
+  .alert-warning {
+    @apply bg-amber-50 border-amber-200 text-amber-800;
+  }
+
+  .alert-error {
+    @apply bg-red-50 border-red-200 text-red-800;
+  }
+
+  /* Form validation with icons */
+  .form-field-success {
+    @apply relative;
+  }
+
+  .form-field-success::after {
+    content: '✓';
+    @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-green-500 text-sm font-bold;
+  }
+
+  .form-field-error {
+    @apply relative;
+  }
+
+  .form-field-error::after {
+    content: '✗';
+    @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500 text-sm font-bold;
+  }
+
+  /* Navigation styles */
+  .nav-link {
+    @apply text-blue-600 hover:text-blue-700 font-medium transition-colors hover:underline;
+  }
+}
+
+/* Custom animations and utilities */
+@layer utilities {
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-bounce-subtle {
+    animation: bounce 3s infinite;
+  }
+
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .backdrop-blur-xs {
+    backdrop-filter: blur(2px);
+  }
+}
